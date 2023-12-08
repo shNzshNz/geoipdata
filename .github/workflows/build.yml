@@ -2,10 +2,10 @@ name: Build geoip files
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 4"
+    - cron: "15 9 * * *"
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - ".gitignore"
       - "config-example.json"
@@ -22,10 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version-file: ./go.mod
+          # go-version: "oldstable"
 
       - name: Set variables
         run: |
@@ -46,10 +47,8 @@ jobs:
           curl -sSL https://ip-ranges.amazonaws.com/ip-ranges.json | jq --raw-output '.prefixes[],.ipv6_prefixes[] | select(.service == "CLOUDFRONT") | .ip_prefix,.ipv6_prefix' | grep "/" >> data/cloudfront
 
       - name: Get GeoLite2
-        env:
-          LICENSE_KEY: ${{ secrets.MAXMIND_GEOLITE2_LICENSE }}
         run: |
-          curl -L "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${LICENSE_KEY}&suffix=zip" -o GeoLite2-Country-CSV.zip
+          curl -L "https://github.com/Loyalsoldier/geoip/raw/release/GeoLite2-Country-CSV.zip" -o GeoLite2-Country-CSV.zip
           unzip GeoLite2-Country-CSV.zip
           rm -f GeoLite2-Country-CSV.zip
           mv GeoLite2* geolite2
@@ -81,13 +80,11 @@ jobs:
           done
 
       - name: Download GeoLite2
-        env:
-          LICENSE_KEY: ${{ secrets.MAXMIND_GEOLITE2_LICENSE }}
         run: |
-          curl -L "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN&license_key=${LICENSE_KEY}&suffix=tar.gz" -o GeoLite2-ASN.tar.gz
-          curl -L "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN-CSV&license_key=${LICENSE_KEY}&suffix=zip" -o GeoLite2-ASN-CSV.zip
-          curl -L "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${LICENSE_KEY}&suffix=tar.gz" -o GeoLite2-Country.tar.gz
-          curl -L "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${LICENSE_KEY}&suffix=zip" -o GeoLite2-Country-CSV.zip
+          curl -L "https://github.com/Loyalsoldier/geoip/raw/release/GeoLite2-ASN.tar.gz" -o GeoLite2-ASN.tar.gz
+          curl -L "https://github.com/Loyalsoldier/geoip/raw/release/GeoLite2-ASN-CSV.zip" -o GeoLite2-ASN-CSV.zip
+          curl -L "https://github.com/Loyalsoldier/geoip/raw/release/GeoLite2-Country.tar.gz" -o GeoLite2-Country.tar.gz
+          curl -L "https://github.com/Loyalsoldier/geoip/raw/release/GeoLite2-Country-CSV.zip" -o GeoLite2-Country-CSV.zip
 
       - name: Move files to publish directory
         run: |
