@@ -13,7 +13,9 @@
       "type": "cutter",
       "action": "remove",
       "args": {
-        "wantedList": ["cn"],
+        "wantedList": [
+	  "cn"
+	],
         "onlyIPType": "ipv4"
       }
     },
@@ -45,11 +47,10 @@
       }
     },
     {
-      "type": "text",
-      "action": "add",
+      "type": "cutter",
+      "action": "remove",
       "args": {
-        "name": "cloudflare",
-        "uri": "https://www.cloudflare.com/ips-v4"
+        "onlyIPType": "ipv6"
       }
     },
     {
@@ -57,7 +58,17 @@
       "action": "add",
       "args": {
         "name": "cloudflare",
-        "uri": "https://www.cloudflare.com/ips-v6"
+        "uri": "https://www.cloudflare.com/ips-v4",
+	"onlyIPType": "ipv4"
+      }
+    },
+    {
+      "type": "text",
+      "action": "add",
+      "args": {
+        "name": "cloudflare",
+        "uri": "https://www.cloudflare.com/ips-v6",
+	"onlyIPType": "ipv6"
       }
     },
     {
@@ -93,7 +104,10 @@
       "action": "output",
       "args": {
         "outputName": "geoip-only-cn-private.dat",
-        "wantedList": ["cn", "private"]
+        "wantedList": [
+	  "cn",
+	  "private"
+	]
       }
     },
     {
@@ -120,7 +134,10 @@
       "action": "output",
       "args": {
         "oneFilePerList": true,
-        "wantedList": ["cn", "private"]
+        "wantedList": [
+	  "cn",
+	  "private"
+	]
       }
     },
     {
@@ -149,7 +166,10 @@
       "action": "output",
       "args": {
         "outputName": "Country-only-cn-private.mmdb",
-        "wantedList": ["cn", "private"]
+        "wantedList": [
+	  "cn",
+	  "private"
+	]
       }
     },
     {
