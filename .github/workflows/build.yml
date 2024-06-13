@@ -1,4 +1,5 @@
-name: Build geoip files
+name: Build and release
+
 on:
   workflow_dispatch:
   schedule:
@@ -30,8 +31,8 @@ jobs:
 
       - name: Set variables
         run: |
-          echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-          echo "RELEASE_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
         shell: bash
 
       - name: Fetch lists from ripe.net
@@ -121,3 +122,18 @@ jobs:
           file_glob: true
           file: ./publish/*
           tag: ${{ env.TAG_NAME }}
+
+      - name: Delete releases and workflows runs
+        uses: ophub/delete-releases-workflows@main
+        with:
+          delete_releases: true
+          prerelease_option: "all"
+          releases_keep_latest: 7
+          # releases_keep_keyword: ""
+          delete_tags: true
+          delete_workflows: true
+          workflows_keep_day: 7
+          # workflows_keep_keyword: ""
+          out_log: false
+          # repo: "shNzshNz/geoipdata"
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
