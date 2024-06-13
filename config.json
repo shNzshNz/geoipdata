@@ -102,6 +102,8 @@
       "args": {
         "outputName": "geoip-asn.dat",
         "wantedList": [
+	  "akamai",
+	  "bilibili",
           "cloudflare",
           "cloudfront",
           "facebook",
@@ -129,6 +131,8 @@
         "overwriteList": [
           "cn",
           "private",
+	  "akamai",
+	  "bilibili",
           "cloudflare",
           "cloudfront",
           "facebook",
@@ -154,6 +158,8 @@
       "args": {
         "outputName": "Country-asn.mmdb",
         "wantedList": [
+	  "akamai",
+	  "bilibili",
           "cloudflare",
           "cloudfront",
           "facebook",
